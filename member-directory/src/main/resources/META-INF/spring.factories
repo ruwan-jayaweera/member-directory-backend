@@ -1,0 +1,2 @@
+org.springframework.boot.autoconfigure.EnableAutoConfiguration=\
+lk.rcu.rcg2000.memberdirectory.MemberDirectoryAppAutoConfiguration
