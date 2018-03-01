@@ -37,6 +37,4 @@ public class Profile {
     @Column(name = "ID", updatable = false, nullable = false)
     private String id;
 
-    @Column(name = "NAME", nullable = false)
-    private String name;
 }
