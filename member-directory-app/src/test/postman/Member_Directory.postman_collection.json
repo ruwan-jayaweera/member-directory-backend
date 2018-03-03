@@ -1,0 +1,54 @@
+{
+	"info": {
+		"name": "Member Directory",
+		"_postman_id": "cffed8a0-481c-660f-5ba6-8ffd9bc139a6",
+		"description": "",
+		"schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json"
+	},
+	"item": [
+		{
+			"name": "Create Profile",
+			"request": {
+				"method": "POST",
+				"header": [
+					{
+						"key": "Content-Type",
+						"value": "application/json"
+					}
+				],
+				"body": {
+					"mode": "raw",
+					"raw": "{\n  \"city\": \"Dehiwala\",\n  \"country\": \"Sri Lanka\",\n  \"email\": \"ruwan.jayaweera@gmail.com\",\n  \"firstName\": \"ruwan\",\n  \"lastName\": \"jayaweera\",\n  \"nickName\": \"ruwa\",\n  \"phoneNumber\": \"773147662\",\n  \"profession\": \"software engineer\",\n  \"userName\": \"ruwan\"\n}"
+				},
+				"url": {
+					"raw": "http://{{hostname}}:{{port}}/profiles",
+					"protocol": "http",
+					"host": [
+						"{{hostname}}"
+					],
+					"port": "{{port}}",
+					"path": [
+						"profiles"
+					]
+				},
+				"description": ""
+			},
+			"response": []
+		}
+	],
+	"auth": {
+		"type": "basic",
+		"basic": [
+			{
+				"key": "password",
+				"value": "password",
+				"type": "string"
+			},
+			{
+				"key": "username",
+				"value": "user",
+				"type": "string"
+			}
+		]
+	}
+}

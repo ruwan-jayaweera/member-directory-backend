@@ -10,9 +10,37 @@
                 <constraints nullable="false" primaryKey="true" primaryKeyName="PROFILE_PK"/>
             </column>
 
-            <column name="NAME" type="VARCHAR(255)">
+            <column name="FIRST_NAME" type="VARCHAR(255)">
                 <constraints nullable="false"/>
             </column>
+            <column name="LAST_NAME" type="VARCHAR(255)">
+                <constraints nullable="false"/>
+            </column>
+            <column name="EMAIL" type="VARCHAR(255)">
+                <constraints nullable="true"/>
+            </column>
+            <column name="PHONE_NUMBER" type="VARCHAR(255)">
+                <constraints nullable="true"/>
+            </column>
+            <column name="PROFESSION" type="VARCHAR(255)">
+                <constraints nullable="true"/>
+            </column>
+            <column name="CITY" type="VARCHAR(255)">
+                <constraints nullable="true"/>
+            </column>
+            <column name="COUNTRY" type="VARCHAR(255)">
+                <constraints nullable="true"/>
+            </column>
+            <column name="NICK_NAME" type="VARCHAR(255)">
+                <constraints nullable="true"/>
+            </column>
+            <column name="USER_NAME" type="VARCHAR(255)">
+                <constraints nullable="false"/>
+            </column>
+            <column name="PASSWORD" type="VARCHAR(255)">
+                <constraints nullable="false"/>
+            </column>
+
         </createTable>
     </changeSet>
 </databaseChangeLog>

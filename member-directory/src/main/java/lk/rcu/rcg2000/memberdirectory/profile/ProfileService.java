@@ -2,6 +2,7 @@ package lk.rcu.rcg2000.memberdirectory.profile;
 
 import com.querydsl.core.types.Predicate;
 import lk.rcu.rcg2000.memberdirectory.exceptions.NotFoundException;
+import lk.rcu.rcg2000.memberdirectory.util.PasswordGenerator;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -18,17 +19,19 @@ public class ProfileService {
     @Autowired
     private ProfileRepository ProfileRepository;
 
+    @Autowired
+    private PasswordGenerator passwordGenerator;
+
     private Logger logger = LoggerFactory.getLogger(ProfileService.class);
 
-    public Profile create(final Profile Profile) {
-
-        return ProfileRepository.save(Profile);
+    public Profile create(final Profile profile) {
+        profile.setPassword(passwordGenerator.nextString());
+        return ProfileRepository.save(profile);
     }
 
     public Profile update(final String id, final Profile updated) {
         final Profile existing = findOne(id);
 
-        existing.setName(updated.getName());
         return ProfileRepository.save(existing);
     }
 

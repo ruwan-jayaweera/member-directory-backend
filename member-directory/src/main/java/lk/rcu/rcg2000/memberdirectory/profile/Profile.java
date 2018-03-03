@@ -37,6 +37,34 @@ public class Profile {
     @Column(name = "ID", updatable = false, nullable = false)
     private String id;
 
-    @Column(name = "NAME", nullable = false)
-    private String name;
+    @Column(name = "FIRST_NAME", nullable = false)
+    private String firstName;
+
+    @Column(name = "LAST_NAME", nullable = false)
+    private String lastName;
+
+    @Column(name = "EMAIL", nullable = true)
+    private String email;
+
+    @Column(name = "PHONE_NUMBER", nullable = true)
+    private String phoneNumber;
+
+    @Column(name = "PROFESSION", nullable = true)
+    private String profession;
+
+    @Column(name = "CITY", nullable = true)
+    private String city;
+
+    @Column(name = "COUNTRY", nullable = true)
+    private String country;
+
+    @Column(name = "NICK_NAME", nullable = true)
+    private String nickName;
+
+    @Column(name = "USER_NAME", nullable = false)
+    private String userName;
+
+    @Column(name = "PASSWORD", nullable = false)
+    private String password;
+
 }
