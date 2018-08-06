@@ -54,4 +54,11 @@ public class ProfileController implements ProfileApi {
     public void deleteProfile(@PathVariable final String id) {
         profileService.delete(id);
     }
+
+    @Override
+    @PutMapping("/{profileId}/company/{companyId}")
+    @ResponseStatus(HttpStatus.NO_CONTENT)
+    public void attacheCompany(@PathVariable final String profileId,@PathVariable final String companyId) {
+        profileService.attachCompany(profileId, companyId);
+    }
 }

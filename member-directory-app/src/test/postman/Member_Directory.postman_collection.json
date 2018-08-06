@@ -27,7 +27,7 @@
 					"basic": [
 						{
 							"key": "password",
-							"value": "5072222b-f48e-4be5-b320-77804210669c",
+							"value": "password",
 							"type": "string"
 						},
 						{
@@ -70,7 +70,7 @@
 					"basic": [
 						{
 							"key": "password",
-							"value": "5072222b-f48e-4be5-b320-77804210669c",
+							"value": "password",
 							"type": "string"
 						},
 						{
@@ -98,6 +98,106 @@
 					"path": [
 						"profiles",
 						"{{profile_id}}"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Create Company",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"id": "7cc00cc5-7b21-4e26-8c61-a4beaca96cc0",
+						"type": "text/javascript",
+						"exec": [
+							"var jsonData = JSON.parse(responseBody);",
+							"postman.setEnvironmentVariable(\"company_id\", jsonData.id);",
+							""
+						]
+					}
+				}
+			],
+			"request": {
+				"auth": {
+					"type": "basic",
+					"basic": [
+						{
+							"key": "password",
+							"value": "password",
+							"type": "string"
+						},
+						{
+							"key": "username",
+							"value": "user",
+							"type": "string"
+						}
+					]
+				},
+				"method": "POST",
+				"header": [
+					{
+						"key": "Content-Type",
+						"value": "application/json"
+					}
+				],
+				"body": {
+					"mode": "raw",
+					"raw": "{\n  \"address\":\"123 bauddhaloka mv\",\n  \"city\": \"Colombo\",\n  \"country\": \"Sri Lanka\",\n  \"name\": \"Accelerite\",\n  \"phoneNumber\": \"0112510346\",\n  \"industry\": \"ICT\"\n}"
+				},
+				"url": {
+					"raw": "http://{{hostname}}:{{port}}/companies",
+					"protocol": "http",
+					"host": [
+						"{{hostname}}"
+					],
+					"port": "{{port}}",
+					"path": [
+						"companies"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Attach Company",
+			"request": {
+				"auth": {
+					"type": "basic",
+					"basic": [
+						{
+							"key": "password",
+							"value": "password",
+							"type": "string"
+						},
+						{
+							"key": "username",
+							"value": "user",
+							"type": "string"
+						}
+					]
+				},
+				"method": "PUT",
+				"header": [
+					{
+						"key": "Content-Type",
+						"value": "application/json"
+					}
+				],
+				"body": {},
+				"url": {
+					"raw": "http://{{hostname}}:{{port}}/profiles/{{profile_id}}/company/{{company_id}}",
+					"protocol": "http",
+					"host": [
+						"{{hostname}}"
+					],
+					"port": "{{port}}",
+					"path": [
+						"profiles",
+						"{{profile_id}}",
+						"company",
+						"{{company_id}}"
 					]
 				}
 			},

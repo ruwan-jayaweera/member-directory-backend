@@ -6,6 +6,10 @@ import io.swagger.annotations.ApiParam;
 import io.swagger.annotations.ApiResponse;
 import io.swagger.annotations.ApiResponses;
 import lk.rcu.rcg2000.memberdirectory.exceptions.ApiError;
+import org.springframework.http.HttpStatus;
+import org.springframework.web.bind.annotation.PathVariable;
+import org.springframework.web.bind.annotation.PutMapping;
+import org.springframework.web.bind.annotation.ResponseStatus;
 
 @Api(tags = "Profiles")
 public interface ProfileApi {
@@ -45,4 +49,11 @@ public interface ProfileApi {
     })
     void deleteProfile(String profileId);
 
+    @ApiOperation(value = "Attaching a Company to a Profile",
+            notes = "Update an existing Profile, identified by a given Profile ID.")
+    @ApiResponses(value = {
+            @ApiResponse(code = 204, message = "No Content - Successfully attached a Company to a Profile"),
+            @ApiResponse(code = 404, message = "Resource Not Found - Profile/Company for given ID not found", response = ApiError.class),
+    })
+    void attacheCompany(String profileId, String companyId);
 }

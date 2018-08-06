@@ -1,6 +1,8 @@
 package lk.rcu.rcg2000.memberdirectory.profile;
 
 import com.querydsl.core.types.Predicate;
+import lk.rcu.rcg2000.memberdirectory.company.Company;
+import lk.rcu.rcg2000.memberdirectory.company.CompanyService;
 import lk.rcu.rcg2000.memberdirectory.exceptions.NotFoundException;
 import lk.rcu.rcg2000.memberdirectory.util.PasswordGenerator;
 import org.slf4j.Logger;
@@ -17,7 +19,10 @@ import java.util.Objects;
 @Service
 public class ProfileService {
     @Autowired
-    private ProfileRepository ProfileRepository;
+    private ProfileRepository profileRepository;
+
+    @Autowired
+    private CompanyService companyService;
 
     @Autowired
     private PasswordGenerator passwordGenerator;
@@ -26,44 +31,51 @@ public class ProfileService {
 
     public Profile create(final Profile profile) {
         profile.setPassword(passwordGenerator.nextString());
-        return ProfileRepository.save(profile);
+        return profileRepository.save(profile);
     }
 
     public Profile update(final String id, final Profile updated) {
         final Profile existing = findOne(id);
 
-        return ProfileRepository.save(existing);
+        return profileRepository.save(existing);
     }
 
     public Profile findOne(final String id) {
-        final Profile Profile = ProfileRepository.findOne(id);
+        final Profile profile = profileRepository.findOne(id);
 
-        if (Objects.isNull(Profile)) {
+        if (Objects.isNull(profile)) {
             throw new NotFoundException(id);
         } else {
-            return Profile;
+            return profile;
         }
     }
 
     public List<Profile> findAll() {
-        return ProfileRepository.findAll();
+        return profileRepository.findAll();
     }
 
     public void delete(final String id) {
         try {
-            ProfileRepository.delete(id);
+            profileRepository.delete(id);
         } catch (EmptyResultDataAccessException ex) {
             throw new NotFoundException(id);
         }
     }
 
     public Page<Profile> findAll(final Predicate predicate, final Pageable pageable) {
-        return ProfileRepository.findAll(predicate, pageable);
+        return profileRepository.findAll(predicate, pageable);
     }
 
     public void checkExists(final String id) {
-        if (!ProfileRepository.exists(id)) {
+        if (!profileRepository.exists(id)) {
             throw new NotFoundException(id);
         }
+    }
+
+    public void attachCompany(final String profileId, final String companyId) {
+        final Profile existingP = findOne(profileId);
+        final Company existingC = companyService.findOne(companyId);
+        existingP.setCompany(existingC);
+        profileRepository.save(existingP);
     }
 }

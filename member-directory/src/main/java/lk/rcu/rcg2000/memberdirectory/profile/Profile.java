@@ -1,5 +1,6 @@
 package lk.rcu.rcg2000.memberdirectory.profile;
 
+import lk.rcu.rcg2000.memberdirectory.company.Company;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
@@ -8,10 +9,13 @@ import lombok.NoArgsConstructor;
 import lombok.ToString;
 import org.hibernate.annotations.GenericGenerator;
 
+import javax.persistence.CascadeType;
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.Id;
+import javax.persistence.JoinColumn;
+import javax.persistence.OneToOne;
 import javax.persistence.Table;
 
 /**
@@ -66,5 +70,10 @@ public class Profile {
 
     @Column(name = "PASSWORD", nullable = false)
     private String password;
+
+    @OneToOne(cascade = CascadeType.ALL)
+    @JoinColumn(name = "COMPANY_ID")
+    private Company company;
+
 
 }
