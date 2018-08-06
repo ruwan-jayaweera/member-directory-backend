@@ -33,10 +33,10 @@ public class ProfileController implements ProfileApi {
 
     @Override
     @PostMapping
-    @ResponseStatus(HttpStatus.NO_CONTENT)
-    public void createProfile(@RequestBody @Valid final ProfileRequest profileRequest) {
+    @ResponseStatus(HttpStatus.CREATED)
+    public Profile createProfile(@RequestBody @Valid final ProfileRequest profileRequest) {
         final Profile profile = profileMapper.requestToProfile(profileRequest);
-        profileService.create(profile);
+        return profileService.create(profile);
     }
 
     @Override

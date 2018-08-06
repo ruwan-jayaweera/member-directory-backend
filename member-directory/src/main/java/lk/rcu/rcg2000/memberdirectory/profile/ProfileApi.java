@@ -22,10 +22,10 @@ public interface ProfileApi {
     @ApiOperation(value = "Create a Profile",
             notes = "Create a Profile.")
     @ApiResponses(value = {
-            @ApiResponse(code = 204, message = "No Content - Successfully updated Profile"),
+            @ApiResponse(code = 200, message = "Successfully created Profile"),
             @ApiResponse(code = 400, message = "Bad Request - Possibly invalid json format", response = ApiError.class)
     })
-    void createProfile(@ApiParam(value = "profile", required = true) ProfileRequest profileRequest);
+    Profile createProfile(@ApiParam(value = "profile", required = true) ProfileRequest profileRequest);
 
     @ApiOperation(value = "Update a Profile",
             notes = "Update an existing Profile, identified by a given Profile ID.")

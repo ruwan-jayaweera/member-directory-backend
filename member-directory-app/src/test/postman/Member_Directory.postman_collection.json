@@ -1,14 +1,42 @@
 {
 	"info": {
+		"_postman_id": "3a7d090f-12c4-4f46-a852-887fa3e23bf1",
 		"name": "Member Directory",
-		"_postman_id": "cffed8a0-481c-660f-5ba6-8ffd9bc139a6",
-		"description": "",
 		"schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json"
 	},
 	"item": [
 		{
 			"name": "Create Profile",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"id": "a2b51465-1725-4473-b3b7-61235658c09a",
+						"type": "text/javascript",
+						"exec": [
+							"var jsonData = JSON.parse(responseBody);",
+							"postman.setEnvironmentVariable(\"profile_id\", jsonData.id);",
+							""
+						]
+					}
+				}
+			],
 			"request": {
+				"auth": {
+					"type": "basic",
+					"basic": [
+						{
+							"key": "password",
+							"value": "5072222b-f48e-4be5-b320-77804210669c",
+							"type": "string"
+						},
+						{
+							"key": "username",
+							"value": "user",
+							"type": "string"
+						}
+					]
+				},
 				"method": "POST",
 				"header": [
 					{
@@ -30,8 +58,48 @@
 					"path": [
 						"profiles"
 					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Retrieve Profile",
+			"request": {
+				"auth": {
+					"type": "basic",
+					"basic": [
+						{
+							"key": "password",
+							"value": "5072222b-f48e-4be5-b320-77804210669c",
+							"type": "string"
+						},
+						{
+							"key": "username",
+							"value": "user",
+							"type": "string"
+						}
+					]
 				},
-				"description": ""
+				"method": "GET",
+				"header": [
+					{
+						"key": "Content-Type",
+						"value": "application/json"
+					}
+				],
+				"body": {},
+				"url": {
+					"raw": "http://{{hostname}}:{{port}}/profiles/{{profile_id}}",
+					"protocol": "http",
+					"host": [
+						"{{hostname}}"
+					],
+					"port": "{{port}}",
+					"path": [
+						"profiles",
+						"{{profile_id}}"
+					]
+				}
 			},
 			"response": []
 		}
