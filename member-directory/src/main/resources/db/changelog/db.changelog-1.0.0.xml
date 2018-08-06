@@ -43,4 +43,31 @@
 
         </createTable>
     </changeSet>
+    <changeSet author="Ruwan Jayaweera" id="1.0.0-2">
+        <createTable tableName="COMPANY">
+            <column name="ID" type="VARCHAR(255)">
+                <constraints nullable="false" primaryKey="true" primaryKeyName="COMPANY_PK"/>
+            </column>
+
+            <column name="NAME" type="VARCHAR(255)">
+                <constraints nullable="false"/>
+            </column>
+            <column name="ADDRESS" type="VARCHAR(255)">
+                <constraints nullable="false"/>
+            </column>
+            <column name="PHONE_NUMBER" type="VARCHAR(255)">
+                <constraints nullable="true"/>
+            </column>
+            <column name="CITY" type="VARCHAR(255)">
+                <constraints nullable="true"/>
+            </column>
+            <column name="COUNTRY" type="VARCHAR(255)">
+                <constraints nullable="true"/>
+            </column>
+            <column name="INDUSTRY" type="VARCHAR(255)">
+                <constraints nullable="true"/>
+            </column>
+
+        </createTable>
+    </changeSet>
 </databaseChangeLog>
