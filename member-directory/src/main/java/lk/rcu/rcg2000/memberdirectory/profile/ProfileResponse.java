@@ -1,5 +1,6 @@
 package lk.rcu.rcg2000.memberdirectory.profile;
 
+import lk.rcu.rcg2000.memberdirectory.company.Company;
 import lombok.Data;
 
 @Data
@@ -15,5 +16,6 @@ public class ProfileResponse {
     private String country;
     private String nickName;
     private String userName;
+    private Company company;
 
 }

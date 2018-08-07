@@ -1,6 +1,7 @@
 package lk.rcu.rcg2000.memberdirectory.profile;
 
 import io.swagger.annotations.ApiModelProperty;
+import lk.rcu.rcg2000.memberdirectory.company.Company;
 import lombok.Builder;
 import lombok.Data;
 
@@ -43,4 +44,7 @@ public class ProfileRequest {
     @NotNull(message = "Profile user name cannot be null.")
     @Size(min = 5, message = "Profile user name cannot be empty.")
     private String userName;
+
+    @ApiModelProperty(required = false)
+    private Company company;
 }
