@@ -4,6 +4,8 @@ import com.querydsl.core.types.Predicate;
 import lk.rcu.rcg2000.memberdirectory.company.Company;
 import lk.rcu.rcg2000.memberdirectory.company.CompanyService;
 import lk.rcu.rcg2000.memberdirectory.exceptions.NotFoundException;
+import lk.rcu.rcg2000.memberdirectory.skill.Skill;
+import lk.rcu.rcg2000.memberdirectory.skill.SkillService;
 import lk.rcu.rcg2000.memberdirectory.util.PasswordGenerator;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -15,6 +17,7 @@ import org.springframework.stereotype.Service;
 
 import java.util.List;
 import java.util.Objects;
+import java.util.Set;
 
 @Service
 public class ProfileService {
@@ -23,6 +26,9 @@ public class ProfileService {
 
     @Autowired
     private CompanyService companyService;
+
+    @Autowired
+    private SkillService skillService;
 
     @Autowired
     private PasswordGenerator passwordGenerator;
@@ -36,6 +42,14 @@ public class ProfileService {
 
     public Profile update(final String id, final Profile updated) {
         final Profile existing = findOne(id);
+        existing.setCity(updated.getCity());
+        existing.setCountry(updated.getCountry());
+        existing.setEmail(updated.getEmail());
+        existing.setFirstName(updated.getFirstName());
+        existing.setLastName(updated.getLastName());
+        existing.setNickName(updated.getNickName());
+        existing.setPhoneNumber(updated.getPhoneNumber());
+        existing.setProfession(updated.getProfession());
 
         return profileRepository.save(existing);
     }
@@ -77,5 +91,16 @@ public class ProfileService {
         final Company existingC = companyService.findOne(companyId);
         existingP.setCompany(existingC);
         profileRepository.save(existingP);
+    }
+
+    public void attachSkill(final String profileId, String skillId) {
+        final Profile profile = this.findOne(profileId);
+        final Skill skill = skillService.findOne(skillId);
+
+        final Set<Skill> skills = profile.getSkills();
+        skills.add(skill);
+        profile.setSkills(skills);
+        profileRepository.save(profile);
+
     }
 }

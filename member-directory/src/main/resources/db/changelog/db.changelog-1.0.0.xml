@@ -9,7 +9,6 @@
             <column name="ID" type="VARCHAR(255)">
                 <constraints nullable="false" primaryKey="true" primaryKeyName="PROFILE_PK"/>
             </column>
-
             <column name="FIRST_NAME" type="VARCHAR(255)">
                 <constraints nullable="false"/>
             </column>
@@ -40,7 +39,9 @@
             <column name="PASSWORD" type="VARCHAR(255)">
                 <constraints nullable="false"/>
             </column>
-
+            <column name="COMPANY_ID" type="VARCHAR(255)">
+                <constraints nullable="true"/>
+            </column>
         </createTable>
     </changeSet>
     <changeSet author="Ruwan Jayaweera" id="1.0.0-2">
@@ -48,7 +49,6 @@
             <column name="ID" type="VARCHAR(255)">
                 <constraints nullable="false" primaryKey="true" primaryKeyName="COMPANY_PK"/>
             </column>
-
             <column name="NAME" type="VARCHAR(255)">
                 <constraints nullable="false"/>
             </column>
@@ -67,7 +67,41 @@
             <column name="INDUSTRY" type="VARCHAR(255)">
                 <constraints nullable="true"/>
             </column>
+        </createTable>
+        <addForeignKeyConstraint constraintName="PROFILE_COMPANY_FK"
+                                 baseTableName="PROFILE" baseColumnNames="COMPANY_ID"
+                                 referencedTableName="COMPANY" referencedColumnNames="ID"/>
+    </changeSet>
+    <changeSet author="Ruwan Jayaweera" id="1.0.0-3">
+        <createTable tableName="SKILL">
+            <column name="ID" type="VARCHAR(255)">
+                <constraints nullable="false" primaryKey="true" primaryKeyName="SKILL_PK"/>
+            </column>
 
+            <column name="NAME" type="VARCHAR(255)">
+                <constraints nullable="false"/>
+            </column>
+            <column name="CATEGORY" type="VARCHAR(255)">
+                <constraints nullable="false"/>
+            </column>
         </createTable>
     </changeSet>
+
+    <changeSet author="Ruwan Jayaweera" id="1.0.0-4">
+        <createTable tableName="PROFILE_SKILL">
+            <column name="PROFILE_ID" type="VARCHAR(255)">
+                <constraints nullable="false"/>
+            </column>
+            <column name="SKILL_ID" type="VARCHAR(255)">
+                <constraints nullable="false"/>
+            </column>
+        </createTable>
+        <addForeignKeyConstraint constraintName="PROFILE_SKILL_SKILL_FK"
+                                 baseTableName="PROFILE_SKILL" baseColumnNames="SKILL_ID"
+                                 referencedTableName="SKILL" referencedColumnNames="ID"/>
+        <addForeignKeyConstraint constraintName="PROFILE_SKILL_PROFILE_FK"
+                                 baseTableName="PROFILE_SKILL" baseColumnNames="PROFILE_ID"
+                                 referencedTableName="PROFILE" referencedColumnNames="ID"/>
+    </changeSet>
+
 </databaseChangeLog>

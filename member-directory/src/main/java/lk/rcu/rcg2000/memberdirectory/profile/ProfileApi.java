@@ -6,10 +6,6 @@ import io.swagger.annotations.ApiParam;
 import io.swagger.annotations.ApiResponse;
 import io.swagger.annotations.ApiResponses;
 import lk.rcu.rcg2000.memberdirectory.exceptions.ApiError;
-import org.springframework.http.HttpStatus;
-import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.PutMapping;
-import org.springframework.web.bind.annotation.ResponseStatus;
 
 @Api(tags = "Profiles")
 public interface ProfileApi {
@@ -56,4 +52,13 @@ public interface ProfileApi {
             @ApiResponse(code = 404, message = "Resource Not Found - Profile/Company for given ID not found", response = ApiError.class),
     })
     void attacheCompany(String profileId, String companyId);
+
+    @ApiOperation(value = "Link a skill to a profile",
+            notes = "Link a Skill with a given Profile by ID.")
+    @ApiResponses(value = {
+            @ApiResponse(code = 201, message = "Created"),
+            @ApiResponse(code = 401, message = "Unauthorized - Invalid access token", response = ApiError.class),
+            @ApiResponse(code = 404, message = "Resource Not Found - Profile for given ID or Skill not found", response = ApiError.class)
+    })
+    void linkProfileToSkill(String profileId, String skillId);
 }

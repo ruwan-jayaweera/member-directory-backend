@@ -47,4 +47,6 @@ public class ProfileRequest {
 
     @ApiModelProperty(required = false)
     private Company company;
+
+
 }

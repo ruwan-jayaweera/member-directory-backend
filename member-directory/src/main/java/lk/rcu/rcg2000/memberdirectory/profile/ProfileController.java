@@ -12,6 +12,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.ResponseStatus;
 import org.springframework.web.bind.annotation.RestController;
 
+import javax.annotation.security.RolesAllowed;
 import javax.validation.Valid;
 
 @RestController
@@ -60,5 +61,13 @@ public class ProfileController implements ProfileApi {
     @ResponseStatus(HttpStatus.NO_CONTENT)
     public void attacheCompany(@PathVariable final String profileId,@PathVariable final String companyId) {
         profileService.attachCompany(profileId, companyId);
+    }
+
+    @Override
+    @PutMapping("/{profileId}/skill/{skillId}")
+    @ResponseStatus(HttpStatus.CREATED)
+    public void linkProfileToSkill(@PathVariable final String profileId,
+                                   @PathVariable final String skillId) {
+        profileService.attachSkill(profileId, skillId);
     }
 }

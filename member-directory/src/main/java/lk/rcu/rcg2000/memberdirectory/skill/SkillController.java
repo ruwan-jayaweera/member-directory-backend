@@ -1,4 +1,4 @@
-package lk.rcu.rcg2000.memberdirectory.company;
+package lk.rcu.rcg2000.memberdirectory.skill;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
@@ -15,43 +15,43 @@ import org.springframework.web.bind.annotation.RestController;
 import javax.validation.Valid;
 
 @RestController
-@RequestMapping(value = "/companies")
-public class CompanyController implements CompanyApi {
+@RequestMapping(value = "/skills")
+public class SkillController implements SkillApi {
 
     @Autowired
-    private CompanyService companyService;
+    private SkillService skillService;
 
     @Autowired
-    private CompanyMapper companyMapper;
+    private SkillMapper skillMapper;
 
     @Override
     @GetMapping("/{id}")
-    public CompanyResponse getCompany(@PathVariable final String id) {
-        final Company company = companyService.findOne(id);
-        return companyMapper.companyToResponse(company);
+    public SkillResponse getSkill(@PathVariable final String id) {
+        final Skill skill = skillService.findOne(id);
+        return skillMapper.skillToResponse(skill);
     }
 
     @Override
     @PostMapping
     @ResponseStatus(HttpStatus.CREATED)
-    public Company createCompany(@RequestBody @Valid final CompanyRequest companyRequest) {
-        final Company company = companyMapper.requestToCompany(companyRequest);
-        return companyService.create(company);
+    public Skill createSkill(@RequestBody @Valid final SkillRequest skillRequest) {
+        final Skill skill = skillMapper.requestToSkill(skillRequest);
+        return skillService.create(skill);
     }
 
     @Override
     @PutMapping("/{id}")
     @ResponseStatus(HttpStatus.NO_CONTENT)
-    public void updateCompany(@PathVariable final String id,
-                              @RequestBody @Valid final CompanyRequest companyRequest) {
-        final Company company = companyMapper.requestToCompany(companyRequest);
-        companyService.update(id, company);
+    public void updateSkill(@PathVariable final String id,
+                              @RequestBody @Valid final SkillRequest skillRequest) {
+        final Skill skill = skillMapper.requestToSkill(skillRequest);
+        skillService.update(id, skill);
     }
 
     @Override
     @DeleteMapping("/{id}")
     @ResponseStatus(HttpStatus.NO_CONTENT)
-    public void deleteCompany(@PathVariable final String id) {
-        companyService.delete(id);
+    public void deleteSkill(@PathVariable final String id) {
+        skillService.delete(id);
     }
 }

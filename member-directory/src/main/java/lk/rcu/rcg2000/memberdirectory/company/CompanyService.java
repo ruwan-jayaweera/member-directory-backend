@@ -2,8 +2,6 @@ package lk.rcu.rcg2000.memberdirectory.company;
 
 import com.querydsl.core.types.Predicate;
 import lk.rcu.rcg2000.memberdirectory.exceptions.NotFoundException;
-import lk.rcu.rcg2000.memberdirectory.profile.Profile;
-import lk.rcu.rcg2000.memberdirectory.profile.ProfileRepository;
 import lk.rcu.rcg2000.memberdirectory.util.PasswordGenerator;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -21,8 +19,6 @@ public class CompanyService {
     @Autowired
     private CompanyRepository companyRepository;
 
-    @Autowired
-    private PasswordGenerator passwordGenerator;
 
     private Logger logger = LoggerFactory.getLogger(lk.rcu.rcg2000.memberdirectory.company.CompanyService.class);
 

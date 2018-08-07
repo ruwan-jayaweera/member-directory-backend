@@ -63,6 +63,63 @@
 			"response": []
 		},
 		{
+			"name": "Create Profile With Company",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"id": "a2b51465-1725-4473-b3b7-61235658c09a",
+						"type": "text/javascript",
+						"exec": [
+							"var jsonData = JSON.parse(responseBody);",
+							"postman.setEnvironmentVariable(\"profile_id\", jsonData.id);",
+							""
+						]
+					}
+				}
+			],
+			"request": {
+				"auth": {
+					"type": "basic",
+					"basic": [
+						{
+							"key": "password",
+							"value": "password",
+							"type": "string"
+						},
+						{
+							"key": "username",
+							"value": "user",
+							"type": "string"
+						}
+					]
+				},
+				"method": "POST",
+				"header": [
+					{
+						"key": "Content-Type",
+						"value": "application/json"
+					}
+				],
+				"body": {
+					"mode": "raw",
+					"raw": "{\n  \"city\": \"Dehiwala\",\n  \"country\": \"Sri Lanka\",\n  \"email\": \"ruwan.jayaweera@gmail.com\",\n  \"firstName\": \"ruwan\",\n  \"lastName\": \"jayaweera\",\n  \"nickName\": \"ruwa\",\n  \"phoneNumber\": \"773147662\",\n  \"profession\": \"software engineer\",\n  \"userName\": \"ruwan\",\n  \"company\": {\n  \t  \"address\":\"123 bauddhaloka mv\",\n\t  \"city\": \"Colombo\",\n\t  \"country\": \"Sri Lanka\",\n\t  \"name\": \"Accelerite\",\n\t  \"phoneNumber\": \"0112510346\",\n\t  \"industry\": \"ICT\"\n  }\n}"
+				},
+				"url": {
+					"raw": "http://{{hostname}}:{{port}}/profiles",
+					"protocol": "http",
+					"host": [
+						"{{hostname}}"
+					],
+					"port": "{{port}}",
+					"path": [
+						"profiles"
+					]
+				}
+			},
+			"response": []
+		},
+		{
 			"name": "Retrieve Profile",
 			"request": {
 				"auth": {
@@ -161,6 +218,47 @@
 			"response": []
 		},
 		{
+			"name": "Retrieve Company",
+			"request": {
+				"auth": {
+					"type": "basic",
+					"basic": [
+						{
+							"key": "password",
+							"value": "password",
+							"type": "string"
+						},
+						{
+							"key": "username",
+							"value": "user",
+							"type": "string"
+						}
+					]
+				},
+				"method": "GET",
+				"header": [
+					{
+						"key": "Content-Type",
+						"value": "application/json"
+					}
+				],
+				"body": {},
+				"url": {
+					"raw": "http://{{hostname}}:{{port}}/companies/{{company_id}}",
+					"protocol": "http",
+					"host": [
+						"{{hostname}}"
+					],
+					"port": "{{port}}",
+					"path": [
+						"companies",
+						"{{company_id}}"
+					]
+				}
+			},
+			"response": []
+		},
+		{
 			"name": "Attach Company",
 			"request": {
 				"auth": {
@@ -198,6 +296,220 @@
 						"{{profile_id}}",
 						"company",
 						"{{company_id}}"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Create Skill 1",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"id": "d591800c-9a69-424a-b7a4-a545ec5893b8",
+						"type": "text/javascript",
+						"exec": [
+							"var jsonData = JSON.parse(responseBody);",
+							"postman.setEnvironmentVariable(\"skill_id1\", jsonData.id);",
+							""
+						]
+					}
+				}
+			],
+			"request": {
+				"auth": {
+					"type": "basic",
+					"basic": [
+						{
+							"key": "password",
+							"value": "password",
+							"type": "string"
+						},
+						{
+							"key": "username",
+							"value": "user",
+							"type": "string"
+						}
+					]
+				},
+				"method": "POST",
+				"header": [
+					{
+						"key": "Content-Type",
+						"value": "application/json"
+					}
+				],
+				"body": {
+					"mode": "raw",
+					"raw": "{\n  \"name\": \"microservice\",\n  \"category\": \"technical\"\n}"
+				},
+				"url": {
+					"raw": "http://{{hostname}}:{{port}}/skills",
+					"protocol": "http",
+					"host": [
+						"{{hostname}}"
+					],
+					"port": "{{port}}",
+					"path": [
+						"skills"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Create Skill 2",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"id": "f2c10446-3bff-4b58-8a8e-e4bd57a861ee",
+						"type": "text/javascript",
+						"exec": [
+							"var jsonData = JSON.parse(responseBody);",
+							"postman.setEnvironmentVariable(\"skill_id2\", jsonData.id);",
+							""
+						]
+					}
+				}
+			],
+			"request": {
+				"auth": {
+					"type": "basic",
+					"basic": [
+						{
+							"key": "password",
+							"value": "password",
+							"type": "string"
+						},
+						{
+							"key": "username",
+							"value": "user",
+							"type": "string"
+						}
+					]
+				},
+				"method": "POST",
+				"header": [
+					{
+						"key": "Content-Type",
+						"value": "application/json"
+					}
+				],
+				"body": {
+					"mode": "raw",
+					"raw": "{\n  \"name\": \"database tuning\",\n  \"category\": \"technical\"\n}"
+				},
+				"url": {
+					"raw": "http://{{hostname}}:{{port}}/skills",
+					"protocol": "http",
+					"host": [
+						"{{hostname}}"
+					],
+					"port": "{{port}}",
+					"path": [
+						"skills"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Create Skill 3",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"id": "4ac0331e-cdbc-48b5-a56a-59d5e2097291",
+						"type": "text/javascript",
+						"exec": [
+							"var jsonData = JSON.parse(responseBody);",
+							"postman.setEnvironmentVariable(\"skill_id3\", jsonData.id);",
+							""
+						]
+					}
+				}
+			],
+			"request": {
+				"auth": {
+					"type": "basic",
+					"basic": [
+						{
+							"key": "password",
+							"value": "password",
+							"type": "string"
+						},
+						{
+							"key": "username",
+							"value": "user",
+							"type": "string"
+						}
+					]
+				},
+				"method": "POST",
+				"header": [
+					{
+						"key": "Content-Type",
+						"value": "application/json"
+					}
+				],
+				"body": {
+					"mode": "raw",
+					"raw": "{\n  \"name\": \"presentation\",\n  \"category\": \"soft\"\n}"
+				},
+				"url": {
+					"raw": "http://{{hostname}}:{{port}}/skills",
+					"protocol": "http",
+					"host": [
+						"{{hostname}}"
+					],
+					"port": "{{port}}",
+					"path": [
+						"skills"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Link Skill to Profile",
+			"request": {
+				"auth": {
+					"type": "basic",
+					"basic": [
+						{
+							"key": "password",
+							"value": "password",
+							"type": "string"
+						},
+						{
+							"key": "username",
+							"value": "user",
+							"type": "string"
+						}
+					]
+				},
+				"method": "PUT",
+				"header": [
+					{
+						"key": "Content-Type",
+						"value": "application/json"
+					}
+				],
+				"body": {},
+				"url": {
+					"raw": "http://{{hostname}}:{{port}}/profiles/{{profile_id}}/skill/{{skill_id1}}",
+					"protocol": "http",
+					"host": [
+						"{{hostname}}"
+					],
+					"port": "{{port}}",
+					"path": [
+						"profiles",
+						"{{profile_id}}",
+						"skill",
+						"{{skill_id1}}"
 					]
 				}
 			},

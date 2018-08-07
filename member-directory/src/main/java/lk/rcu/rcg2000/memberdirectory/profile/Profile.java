@@ -1,6 +1,7 @@
 package lk.rcu.rcg2000.memberdirectory.profile;
 
 import lk.rcu.rcg2000.memberdirectory.company.Company;
+import lk.rcu.rcg2000.memberdirectory.skill.Skill;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
@@ -12,11 +13,16 @@ import org.hibernate.annotations.GenericGenerator;
 import javax.persistence.CascadeType;
 import javax.persistence.Column;
 import javax.persistence.Entity;
+import javax.persistence.FetchType;
 import javax.persistence.GeneratedValue;
 import javax.persistence.Id;
 import javax.persistence.JoinColumn;
+import javax.persistence.JoinTable;
+import javax.persistence.ManyToMany;
 import javax.persistence.OneToOne;
 import javax.persistence.Table;
+import java.util.HashSet;
+import java.util.Set;
 
 /**
  * Created by ruwan on 3/1/18.
@@ -75,5 +81,14 @@ public class Profile {
     @JoinColumn(name = "COMPANY_ID")
     private Company company;
 
+    @ManyToMany(fetch = FetchType.LAZY,
+            cascade = {
+                    CascadeType.PERSIST,
+                    CascadeType.MERGE
+            })
+    @JoinTable(name = "PROFILE_SKILL",
+            joinColumns = { @JoinColumn(name = "PROFILE_ID") },
+            inverseJoinColumns = { @JoinColumn(name = "SKILL_ID") })
+    private Set<Skill> skills = new HashSet<>();
 
 }

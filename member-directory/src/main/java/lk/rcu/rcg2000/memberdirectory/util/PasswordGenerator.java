@@ -1,6 +1,5 @@
 package lk.rcu.rcg2000.memberdirectory.util;
 
-import org.springframework.context.annotation.Bean;
 import org.springframework.stereotype.Service;
 
 import java.security.SecureRandom;
