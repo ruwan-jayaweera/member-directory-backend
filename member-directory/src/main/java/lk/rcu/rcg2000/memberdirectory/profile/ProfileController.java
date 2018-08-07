@@ -29,7 +29,7 @@ public class ProfileController implements ProfileApi {
     @GetMapping("/{id}")
     public ProfileResponse getProfile(@PathVariable final String id) {
         final Profile Profile = profileService.findOne(id);
-        return profileMapper.ProfileToResponse(Profile);
+        return profileMapper.profileToResponse(Profile);
     }
 
     @Override

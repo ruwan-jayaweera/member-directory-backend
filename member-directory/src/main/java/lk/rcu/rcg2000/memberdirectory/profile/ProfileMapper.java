@@ -6,5 +6,5 @@ import org.mapstruct.Mapper;
 public interface ProfileMapper {
     Profile requestToProfile(ProfileRequest request);
 
-    ProfileResponse ProfileToResponse(Profile profile);
+    ProfileResponse profileToResponse(Profile profile);
 }

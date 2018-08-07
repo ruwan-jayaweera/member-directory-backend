@@ -259,7 +259,7 @@
 			"response": []
 		},
 		{
-			"name": "Attach Company",
+			"name": "Attach Company to Profile",
 			"request": {
 				"auth": {
 					"type": "basic",
@@ -296,6 +296,58 @@
 						"{{profile_id}}",
 						"company",
 						"{{company_id}}"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Retrieve Profile for Company",
+			"request": {
+				"auth": {
+					"type": "basic",
+					"basic": [
+						{
+							"key": "password",
+							"value": "password",
+							"type": "string"
+						},
+						{
+							"key": "username",
+							"value": "user",
+							"type": "string"
+						}
+					]
+				},
+				"method": "GET",
+				"header": [
+					{
+						"key": "Content-Type",
+						"value": "application/json"
+					}
+				],
+				"body": {},
+				"url": {
+					"raw": "http://{{hostname}}:{{port}}/companies/{{company_id}}/profile?page=0&size=10",
+					"protocol": "http",
+					"host": [
+						"{{hostname}}"
+					],
+					"port": "{{port}}",
+					"path": [
+						"companies",
+						"{{company_id}}",
+						"profile"
+					],
+					"query": [
+						{
+							"key": "page",
+							"value": "0"
+						},
+						{
+							"key": "size",
+							"value": "10"
+						}
 					]
 				}
 			},
@@ -551,6 +603,92 @@
 						"{{profile_id}}",
 						"skill",
 						"{{skill_id1}}"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Link Skill to Profile",
+			"request": {
+				"auth": {
+					"type": "basic",
+					"basic": [
+						{
+							"key": "password",
+							"value": "password",
+							"type": "string"
+						},
+						{
+							"key": "username",
+							"value": "user",
+							"type": "string"
+						}
+					]
+				},
+				"method": "PUT",
+				"header": [
+					{
+						"key": "Content-Type",
+						"value": "application/json"
+					}
+				],
+				"body": {},
+				"url": {
+					"raw": "http://{{hostname}}:{{port}}/profiles/{{profile_id}}/skill/{{skill_id2}}",
+					"protocol": "http",
+					"host": [
+						"{{hostname}}"
+					],
+					"port": "{{port}}",
+					"path": [
+						"profiles",
+						"{{profile_id}}",
+						"skill",
+						"{{skill_id2}}"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Link Skill to Profile",
+			"request": {
+				"auth": {
+					"type": "basic",
+					"basic": [
+						{
+							"key": "password",
+							"value": "password",
+							"type": "string"
+						},
+						{
+							"key": "username",
+							"value": "user",
+							"type": "string"
+						}
+					]
+				},
+				"method": "PUT",
+				"header": [
+					{
+						"key": "Content-Type",
+						"value": "application/json"
+					}
+				],
+				"body": {},
+				"url": {
+					"raw": "http://{{hostname}}:{{port}}/profiles/{{profile_id}}/skill/{{skill_id3}}",
+					"protocol": "http",
+					"host": [
+						"{{hostname}}"
+					],
+					"port": "{{port}}",
+					"path": [
+						"profiles",
+						"{{profile_id}}",
+						"skill",
+						"{{skill_id3}}"
 					]
 				}
 			},

@@ -8,7 +8,7 @@ public class ProfilePredicateBuilder {
 
     private Predicate predicate;
 
-    public static ProfilePredicateBuilder ProfilePredicate() {
+    public static ProfilePredicateBuilder profilePredicate() {
         return new ProfilePredicateBuilder();
     }
 
@@ -21,6 +21,11 @@ public class ProfilePredicateBuilder {
 
     public ProfilePredicateBuilder id(String id) {
         predicate = QProfile.profile.id.eq(id).and(predicate);
+        return this;
+    }
+
+    public ProfilePredicateBuilder companyId(String companyId) {
+        predicate = QProfile.profile.company.id.eq(companyId).and(predicate);
         return this;
     }
 
