@@ -1,7 +1,12 @@
 package lk.rcu.rcg2000.memberdirectory.profile;
 
 import lk.rcu.rcg2000.memberdirectory.company.Company;
+import lk.rcu.rcg2000.memberdirectory.company.CompanyResponse;
+import lk.rcu.rcg2000.memberdirectory.skill.Skill;
+import lk.rcu.rcg2000.memberdirectory.skill.SkillResponse;
 import lombok.Data;
+
+import java.util.Set;
 
 @Data
 public class ProfileResponse {
@@ -16,6 +21,7 @@ public class ProfileResponse {
     private String country;
     private String nickName;
     private String userName;
-    private Company company;
+    private CompanyResponse company;
+    private Set<SkillResponse> skills;
 
 }

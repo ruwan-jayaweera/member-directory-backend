@@ -473,6 +473,47 @@
 			"response": []
 		},
 		{
+			"name": "Retrieve Skill",
+			"request": {
+				"auth": {
+					"type": "basic",
+					"basic": [
+						{
+							"key": "password",
+							"value": "password",
+							"type": "string"
+						},
+						{
+							"key": "username",
+							"value": "user",
+							"type": "string"
+						}
+					]
+				},
+				"method": "GET",
+				"header": [
+					{
+						"key": "Content-Type",
+						"value": "application/json"
+					}
+				],
+				"body": {},
+				"url": {
+					"raw": "http://{{hostname}}:{{port}}/skills/{{skill_id1}}",
+					"protocol": "http",
+					"host": [
+						"{{hostname}}"
+					],
+					"port": "{{port}}",
+					"path": [
+						"skills",
+						"{{skill_id1}}"
+					]
+				}
+			},
+			"response": []
+		},
+		{
 			"name": "Link Skill to Profile",
 			"request": {
 				"auth": {
@@ -510,6 +551,47 @@
 						"{{profile_id}}",
 						"skill",
 						"{{skill_id1}}"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Retrieve Profile",
+			"request": {
+				"auth": {
+					"type": "basic",
+					"basic": [
+						{
+							"key": "password",
+							"value": "password",
+							"type": "string"
+						},
+						{
+							"key": "username",
+							"value": "user",
+							"type": "string"
+						}
+					]
+				},
+				"method": "GET",
+				"header": [
+					{
+						"key": "Content-Type",
+						"value": "application/json"
+					}
+				],
+				"body": {},
+				"url": {
+					"raw": "http://{{hostname}}:{{port}}/profiles/{{profile_id}}",
+					"protocol": "http",
+					"host": [
+						"{{hostname}}"
+					],
+					"port": "{{port}}",
+					"path": [
+						"profiles",
+						"{{profile_id}}"
 					]
 				}
 			},
