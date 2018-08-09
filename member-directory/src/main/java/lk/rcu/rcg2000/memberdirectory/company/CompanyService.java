@@ -2,7 +2,6 @@ package lk.rcu.rcg2000.memberdirectory.company;
 
 import com.querydsl.core.types.Predicate;
 import lk.rcu.rcg2000.memberdirectory.exceptions.NotFoundException;
-import lk.rcu.rcg2000.memberdirectory.util.PasswordGenerator;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;

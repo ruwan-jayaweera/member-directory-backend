@@ -734,6 +734,54 @@
 				}
 			},
 			"response": []
+		},
+		{
+			"name": "Set Logging Level",
+			"request": {
+				"auth": {
+					"type": "basic",
+					"basic": [
+						{
+							"key": "password",
+							"value": "password",
+							"type": "string"
+						},
+						{
+							"key": "username",
+							"value": "user",
+							"type": "string"
+						}
+					]
+				},
+				"method": "POST",
+				"header": [
+					{
+						"key": "Content-Type",
+						"value": "application/json"
+					},
+					{
+						"key": "charset",
+						"value": "utf-8"
+					}
+				],
+				"body": {
+					"mode": "raw",
+					"raw": "{\n  \"configuredLevel\": \"DEBUG\"\n}"
+				},
+				"url": {
+					"raw": "http://{{hostname}}:{{port}}/loggers/lk.rcu.rcg2000.memberdirectory",
+					"protocol": "http",
+					"host": [
+						"{{hostname}}"
+					],
+					"port": "{{port}}",
+					"path": [
+						"loggers",
+						"lk.rcu.rcg2000.memberdirectory"
+					]
+				}
+			},
+			"response": []
 		}
 	],
 	"auth": {
