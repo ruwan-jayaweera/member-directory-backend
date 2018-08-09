@@ -104,7 +104,9 @@ public class GlobalExceptionHandler {
     }
 
     private void logError(final HttpServletRequest request, final Exception exception) {
-        logger.error("API exception {} occurred for URL [{}]", exception.getClass().getName(), request.getRequestURL());
-        logger.error("Caught exception: {}", exception.getMessage());
+//        logger.error("API exception {} occurred for URL [{}]", exception.getClass().getName(), request.getRequestURL());
+//        logger.error("Caught exception: {}", exception.getMessage());
+        logger.error("API exception {} occurred for URL [{}] Query [{}] for User Id [{}]", exception.getClass().getName(), request.getMethod() + " " + request.getRequestURL(), request.getQueryString(), request.getUserPrincipal().getName());
+        logger.error("Caught exception: {}", exception.getMessage(), exception);
     }
 }

@@ -36,11 +36,13 @@ public class ProfileService {
     private Logger logger = LoggerFactory.getLogger(ProfileService.class);
 
     public Profile create(final Profile profile) {
+        logger.debug("creating profile:" + profile);
         profile.setPassword(passwordGenerator.nextString());
         return profileRepository.save(profile);
     }
 
     public Profile update(final String id, final Profile updated) {
+        logger.debug("updating profile:" + updated);
         final Profile existing = findOne(id);
         existing.setCity(updated.getCity());
         existing.setCountry(updated.getCountry());
@@ -60,6 +62,7 @@ public class ProfileService {
         if (Objects.isNull(profile)) {
             throw new NotFoundException(id);
         } else {
+            logger.debug("found profile:" + profile);
             return profile;
         }
     }
@@ -70,6 +73,7 @@ public class ProfileService {
 
     public void delete(final String id) {
         try {
+            logger.debug("deleting profile:" + id);
             profileRepository.delete(id);
         } catch (EmptyResultDataAccessException ex) {
             throw new NotFoundException(id);
@@ -88,6 +92,7 @@ public class ProfileService {
 
     public void attachCompany(final String profileId, final String companyId) {
         final Profile existingP = findOne(profileId);
+        logger.debug("attaching profile {} with company {}", profileId, companyId);
         final Company existingC = companyService.findOne(companyId);
         existingP.setCompany(existingC);
         profileRepository.save(existingP);
@@ -96,7 +101,7 @@ public class ProfileService {
     public void attachSkill(final String profileId, String skillId) {
         final Profile profile = this.findOne(profileId);
         final Skill skill = skillService.findOne(skillId);
-
+        logger.debug("attaching profile {} with skill {}", profileId, skillId);
         final Set<Skill> skills = profile.getSkills();
         skills.add(skill);
         profile.setSkills(skills);

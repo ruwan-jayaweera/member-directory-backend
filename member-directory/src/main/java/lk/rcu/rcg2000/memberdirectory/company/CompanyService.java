@@ -23,12 +23,13 @@ public class CompanyService {
     private Logger logger = LoggerFactory.getLogger(lk.rcu.rcg2000.memberdirectory.company.CompanyService.class);
 
     public Company create(final Company company) {
+        logger.debug("creating company:" + company);
         return companyRepository.save(company);
     }
 
     public Company update(final String id, final Company updated) {
         final Company existing = findOne(id);
-
+        logger.debug("updating company:" + updated);
         return companyRepository.save(existing);
     }
 
@@ -38,6 +39,7 @@ public class CompanyService {
         if (Objects.isNull(company)) {
             throw new NotFoundException(id);
         } else {
+            logger.debug("found company:" + company);
             return company;
         }
     }
@@ -48,6 +50,7 @@ public class CompanyService {
 
     public void delete(final String id) {
         try {
+            logger.debug("deleting company:" + id);
             companyRepository.delete(id);
         } catch (EmptyResultDataAccessException ex) {
             throw new NotFoundException(id);

@@ -26,7 +26,7 @@ import java.util.Set;
 
 @Entity
 @EqualsAndHashCode(of = {"id"})
-@ToString
+@ToString(exclude = "profiles")
 @Data
 @Builder
 @NoArgsConstructor
@@ -55,5 +55,6 @@ public class Skill {
                     CascadeType.MERGE
             },
             mappedBy = "skills")
+
     private Set<Profile> profiles = new HashSet<>();
 }

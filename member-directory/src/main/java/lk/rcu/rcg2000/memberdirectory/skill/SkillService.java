@@ -20,23 +20,25 @@ public class SkillService {
 
     private Logger logger = LoggerFactory.getLogger(SkillService.class);
 
-    public Skill create(final Skill company) {
-        return skillRepository.save(company);
+    public Skill create(final Skill skill) {
+        logger.debug("creating skill:" + skill);
+        return skillRepository.save(skill);
     }
 
     public Skill update(final String id, final Skill updated) {
         final Skill existing = findOne(id);
-
+        logger.debug("updating skill:" + updated);
         return skillRepository.save(existing);
     }
 
     public Skill findOne(final String id) {
-        final Skill company = skillRepository.findOne(id);
+        final Skill skill = skillRepository.findOne(id);
 
-        if (Objects.isNull(company)) {
+        if (Objects.isNull(skill)) {
             throw new NotFoundException(id);
         } else {
-            return company;
+            logger.debug("found skill:" + skill);
+            return skill;
         }
     }
 
@@ -46,6 +48,7 @@ public class SkillService {
 
     public void delete(final String id) {
         try {
+            logger.debug("deleting skill:" + id);
             skillRepository.delete(id);
         } catch (EmptyResultDataAccessException ex) {
             throw new NotFoundException(id);
