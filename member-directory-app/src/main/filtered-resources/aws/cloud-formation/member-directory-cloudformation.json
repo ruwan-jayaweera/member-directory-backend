@@ -1,0 +1,804 @@
+{
+  "Description": "Member Directory Service - CloudFormation Template",
+  "Parameters": {
+    "AppZipBucket": {
+      "Description": "S3 Bucket containing zip file of Application",
+      "Type": "String",
+      "Default": ""
+    },
+    "AwsAccountNumber": {
+      "Description": "The AWS account number for the AWS account to create the Member Directory resources.",
+      "Type": "String",
+      "Default": ""
+    },
+    "AwsAccessKeyId": {
+      "Description": "The AWS access key for the AWS account to create the Member Directory resources on.",
+      "Type": "String",
+      "Default": ""
+    },
+    "AwsSecretKey": {
+      "Description": "The AWS secret key for the AWS account to create the Member Directory resources.",
+      "Type": "String",
+      "Default": ""
+    },
+    "AwsRegion": {
+      "Description": "The AWS region.",
+      "Type": "String",
+      "Default": "eu-west-1"
+    },
+    "AwsShareResources": {
+      "Description": "Are these account resources going to be shared as part of a cluster, or should they be namespaced to this node.",
+      "Type": "String",
+      "Default": "true"
+    },
+    "MemberDirectoryServerPort": {
+      "Description": "The Port for Member Directory APIs.",
+      "Type": "String",
+      "Default": "5000"
+    },
+    "KeyName": {
+      "Description": "Name of an existing EC2 key pair to enable SSH access to the instances",
+      "Type": "AWS::EC2::KeyPair::KeyName",
+      "Default": ""
+    },
+    "MemberDirectoryInstanceType": {
+      "ConstraintDescription": "must be a valid EC2 instance type.",
+      "Type": "String",
+      "Description": "Member Directory EC2 instance type",
+      "AllowedValues": [
+        "t2.micro",
+        "t2.small",
+        "t2.medium",
+        "t2.large",
+        "m3.medium",
+        "m3.large",
+        "m3.xlarge",
+        "m3.2xlarge",
+        "m4.large",
+        "m4.xlarge",
+        "m4.2xlarge",
+        "c3.large"
+      ],
+      "Default": "t2.small"
+    },
+    "MemberDirectoryRdsInstanceType": {
+      "ConstraintDescription": "must be a valid EC2 instance type.",
+      "Type": "String",
+      "Description": "RDS EC2 instance type",
+      "AllowedValues": [
+        "db.t2.micro",
+        "db.t2.small",
+        "db.t2.medium",
+        "db.t2.large",
+        "db.m3.medium",
+        "db.m3.large",
+        "db.m3.xlarge",
+        "db.m3.2xlarge",
+        "db.m4.large",
+        "db.m4.xlarge",
+        "db.m4.2xlarge",
+        "db.m4.4xlarge",
+        "db.m4.10xlarge",
+        "db.r3.large",
+        "db.r3.xlarge",
+        "db.r3.2xlarge",
+        "db.r3.4xlarge",
+        "db.r3.8xlarge"
+      ],
+      "Default": "db.t2.micro"
+    },
+    "MemberDirectoryAppZipObject": {
+      "Description": "S3 Object - the archive name .zip file)",
+      "Type": "String",
+      "Default": "member-directory-app-@project.version@.zip"
+    },
+    "MemberDirectorySolutionStackName": {
+      "Description": "SolutionStackName - Java SE configuration",
+      "Type": "String",
+      "Default": "64bit Amazon Linux 2018.03 v2.7.2 running Java 8"
+    },
+    "MemberDirectoryAppMinSize": {
+      "Description": "Minimum Number of EC2 instances running the Application",
+      "Type": "String",
+      "Default": "1"
+    },
+    "MemberDirectoryAppMaxSize": {
+      "Description": "Maximum Number of EC2 instances running the Application",
+      "Type": "String",
+      "Default": "5"
+    },
+    "MemberDirectoryDbDriver": {
+      "Description": "Database driver",
+      "Type": "String",
+      "Default": ""
+    },
+    "MemberDirectoryDbUsername": {
+      "Description": "Database username",
+      "Type": "String",
+      "Default": "sa"
+    },
+    "MemberDirectoryDbPassword": {
+      "Description": "Database password",
+      "Type": "String",
+      "Default": "Pa55w0rd"
+    },
+    "MemberDirectoryDBName": {
+      "Default": "mddb",
+      "Description": "The database name",
+      "Type": "String",
+      "MinLength": "1",
+      "MaxLength": "8",
+      "AllowedPattern": "[a-zA-Z][a-zA-Z0-9]*",
+      "ConstraintDescription": "must begin with a letter and contain only alphanumeric characters."
+    },
+    "MemberDirectoryDbVersion": {
+      "Description": "Version number of the database engine to be used for this instance.",
+      "Type": "String",
+      "AllowedValues": [
+        "9.5.2",
+        "9.4.7",
+        "9.4.5",
+        "9.4.4",
+        "9.4.1",
+        "9.3.12",
+        "9.3.10",
+        "9.3.9",
+        "9.3.6",
+        "9.3.5",
+        "9.3.3",
+        "9.3.2",
+        "9.3.1"
+      ],
+      "Default": "9.5.2"
+    },
+    "MemberDirectoryLoggingFile": {
+      "Description": "Path and filename of the API log file.",
+      "Type": "String",
+      "Default": "logs/member-directory.log"
+    },
+    "LoggingLevelComAeponaMemberDirectory": {
+      "Description": "The logging level for lk.rcu.",
+      "Type": "String",
+      "Default": "WARN"
+    },
+    "LoggingLevelOrgLiquibase": {
+      "Description": "The logging level for org.liquibase.",
+      "Type": "String",
+      "Default": "WARN"
+    },
+    "AwsSSLCert": {
+      "Description": "The ARN for the SSL cert associated with this account.",
+      "Type": "String",
+      "ConstraintDescription": "Must be a valid SSL Cert ARN."
+    },
+    "Route53Url": {
+      "Description": "The URL of an existing Route53 hosted zone (eg: example.com)",
+      "Type": "String",
+      "AllowedPattern": "(?!-)[a-zA-Z0-9-.]{1,63}(?<!-)",
+      "ConstraintDescription": "Must be a valid DNS zone name."
+    }
+  },
+  "Resources": {
+    "MemberDirectoryAlias": {
+      "Type": "AWS::Route53::RecordSetGroup",
+      "Properties": {
+        "HostedZoneName": {
+          "Fn::Join": [
+            "",
+            [
+              {
+                "Ref": "Route53Url"
+              },
+              "."
+            ]
+          ]
+        },
+        "RecordSets": [
+          {
+            "Name": {
+              "Fn::Join": [
+                "",
+                [
+                  "md.",
+                  {
+                    "Ref": "Route53Url"
+                  }
+                ]
+              ]
+            },
+            "Type": "CNAME",
+            "TTL": "900",
+            "ResourceRecords": [
+              {
+                "Fn::Join": [
+                  ".",
+                  [
+                    {
+                      "Ref": "AWS::StackName"
+                    },
+                    {
+                      "Ref": "AWS::Region"
+                    },
+                    "elasticbeanstalk.com"
+                  ]
+                ]
+              }
+            ]
+          }
+        ]
+      }
+    },
+    "MemberDirectoryApp": {
+      "Type": "AWS::ElasticBeanstalk::Application",
+      "Properties": {
+        "ApplicationName": "Member Directory",
+        "Description": "Member profile directory"
+      }
+    },
+    "MemberDirectoryAppVersion": {
+      "Type": "AWS::ElasticBeanstalk::ApplicationVersion",
+      "Properties": {
+        "Description": "MyVersion-0.0.1",
+        "ApplicationName": {
+          "Ref": "MemberDirectoryApp"
+        },
+        "SourceBundle": {
+          "S3Bucket": {
+            "Ref": "AppZipBucket"
+          },
+          "S3Key": {
+            "Ref": "MemberDirectoryAppZipObject"
+          }
+        }
+      }
+    },
+    "MemberDirectoryAppConfigurationTemplate": {
+      "Type": "AWS::ElasticBeanstalk::ConfigurationTemplate",
+      "Properties": {
+        "SolutionStackName": {
+          "Ref": "MemberDirectorySolutionStackName"
+        },
+        "ApplicationName": {
+          "Ref": "MemberDirectoryApp"
+        },
+        "Description": "",
+        "OptionSettings": [
+          {
+            "Namespace": "aws:autoscaling:asg",
+            "OptionName": "MinSize",
+            "Value": {
+              "Ref": "MemberDirectoryAppMinSize"
+            }
+          },
+          {
+            "Namespace": "aws:autoscaling:asg",
+            "OptionName": "MaxSize",
+            "Value": {
+              "Ref": "MemberDirectoryAppMaxSize"
+            }
+          },
+          {
+            "Namespace": "aws:autoscaling:trigger",
+            "OptionName": "MeasureName",
+            "Value": "CPUUtilization"
+          },
+          {
+            "Namespace": "aws:autoscaling:trigger",
+            "OptionName": "Statistic",
+            "Value": "Average"
+          },
+          {
+            "Namespace": "aws:autoscaling:trigger",
+            "OptionName": "Unit",
+            "Value": "Percent"
+          },
+          {
+            "Namespace": "aws:autoscaling:trigger",
+            "OptionName": "Period",
+            "Value": "1"
+          },
+          {
+            "Namespace": "aws:autoscaling:trigger",
+            "OptionName": "BreachDuration",
+            "Value": "1"
+          },
+          {
+            "Namespace": "aws:autoscaling:trigger",
+            "OptionName": "UpperThreshold",
+            "Value": "90"
+          },
+          {
+            "Namespace": "aws:autoscaling:trigger",
+            "OptionName": "UpperBreachScaleIncrement",
+            "Value": "1"
+          },
+          {
+            "Namespace": "aws:autoscaling:trigger",
+            "OptionName": "LowerThreshold",
+            "Value": "35"
+          },
+          {
+            "Namespace": "aws:autoscaling:trigger",
+            "OptionName": "LowerBreachScaleIncrement",
+            "Value": "-1"
+          },
+          {
+            "Namespace": "aws:autoscaling:launchconfiguration",
+            "OptionName": "InstanceType",
+            "Value": {
+              "Ref": "MemberDirectoryInstanceType"
+            }
+          },
+          {
+            "Namespace": "aws:autoscaling:launchconfiguration",
+            "OptionName": "EC2KeyName",
+            "Value": {
+              "Ref": "KeyName"
+            }
+          },
+          {
+            "Namespace": "aws:autoscaling:launchconfiguration",
+            "OptionName": "IamInstanceProfile",
+            "Value": {
+              "Ref": "MemberDirectoryCloudWatchInstanceProfile"
+            }
+          },
+          {
+            "Namespace": "aws:autoscaling:launchconfiguration",
+            "OptionName": "SecurityGroups",
+            "Value": {
+              "Ref": "MemberDirectoryAppSecurityGroup"
+            }
+          },
+          {
+            "Namespace": "aws:elasticbeanstalk:cloudwatch:logs",
+            "OptionName": "StreamLogs",
+            "Value": "true"
+          },
+          {
+            "Namespace": "aws:elasticbeanstalk:cloudwatch:logs",
+            "OptionName": "RetentionInDays",
+            "Value": "14"
+          },
+          {
+            "Namespace": "aws:elasticbeanstalk:cloudwatch:logs",
+            "OptionName": "DeleteOnTerminate",
+            "Value": "false"
+          },
+          {
+            "Namespace": "aws:elasticbeanstalk:environment",
+            "OptionName": "EnvironmentType",
+            "Value": "LoadBalanced"
+          },
+          {
+            "Namespace": "aws:elb:loadbalancer",
+            "OptionName": "LoadBalancerHTTPSPort",
+            "Value": "443"
+          },
+          {
+            "Namespace": "aws:elb:loadbalancer",
+            "OptionName": "SSLCertificateId",
+            "Value": {
+              "Ref": "AwsSSLCert"
+            }
+          },
+          {
+            "Namespace": "aws:elb:loadbalancer",
+            "OptionName": "LoadBalancerHTTPPort",
+            "Value": "OFF"
+          },
+          {
+            "Namespace": "aws:elasticbeanstalk:application",
+            "OptionName": "Application Healthcheck URL",
+            "Value": "/health"
+          },
+          {
+            "Namespace": "aws:elasticbeanstalk:application:environment",
+            "OptionName": "LOGGING_LEVEL_lk.rcu",
+            "Value": {
+              "Ref": "LoggingLevelComAeponaMemberDirectory"
+            }
+          },
+          {
+            "Namespace": "aws:elasticbeanstalk:application:environment",
+            "OptionName": "LOGGING_LEVEL_org.liquibase",
+            "Value": {
+              "Ref": "LoggingLevelOrgLiquibase"
+            }
+          },
+          {
+            "Namespace": "aws:elasticbeanstalk:application:environment",
+            "OptionName": "AWS_ACCESS_KEY_ID",
+            "Value": {
+              "Ref": "AwsAccessKeyId"
+            }
+          },
+          {
+            "Namespace": "aws:elasticbeanstalk:application:environment",
+            "OptionName": "AWS_SECRET_KEY",
+            "Value": {
+              "Ref": "AwsSecretKey"
+            }
+          },
+          {
+            "Namespace": "aws:elasticbeanstalk:application:environment",
+            "OptionName": "AWS_ACCOUNT_NUMBER",
+            "Value": {
+              "Ref": "AwsAccountNumber"
+            }
+          },
+          {
+            "Namespace": "aws:elasticbeanstalk:application:environment",
+            "OptionName": "AWS_SHARE_ACCOUNT_RESOURCES",
+            "Value": {
+              "Ref": "AwsShareResources"
+            }
+          },
+          {
+            "Namespace": "aws:elasticbeanstalk:application:environment",
+            "OptionName": "AWS_REGION",
+            "Value": {
+              "Ref": "AwsRegion"
+            }
+          },
+          {
+            "Namespace": "aws:elasticbeanstalk:application:environment",
+            "OptionName": "SERVER_PORT",
+            "Value": {
+              "Ref": "MemberDirectoryServerPort"
+            }
+          },
+          {
+            "Namespace": "aws:elasticbeanstalk:application:environment",
+            "OptionName": "LOGGING_FILE",
+            "Value": {
+              "Ref": "MemberDirectoryLoggingFile"
+            }
+          },
+          {
+            "Namespace": "aws:elasticbeanstalk:application:environment",
+            "OptionName": "SPRING_DATASOURCE_URL",
+            "Value": {
+              "Fn::Join": [
+                "",
+                [
+                  "jdbc:postgresql://",
+                  {
+                    "Fn::GetAtt": [
+                      "MemberDirectoryRdsPostgres",
+                      "Endpoint.Address"
+                    ]
+                  },
+                  ":",
+                  {
+                    "Fn::GetAtt": [
+                      "MemberDirectoryRdsPostgres",
+                      "Endpoint.Port"
+                    ]
+                  },
+                  "/",
+                  {
+                    "Ref": "MemberDirectoryDBName"
+                  }
+                ]
+              ]
+            }
+          },
+          {
+            "Namespace": "aws:elasticbeanstalk:application:environment",
+            "OptionName": "SPRING_DATASOURCE_DRIVER_CLASS_NAME",
+            "Value": {
+              "Ref": "MemberDirectoryDbDriver"
+            }
+          },
+          {
+            "Namespace": "aws:elasticbeanstalk:application:environment",
+            "OptionName": "SPRING_DATASOURCE_USERNAME",
+            "Value": {
+              "Ref": "MemberDirectoryDbUsername"
+            }
+          },
+          {
+            "Namespace": "aws:elasticbeanstalk:application:environment",
+            "OptionName": "SPRING_DATASOURCE_PASSWORD",
+            "Value": {
+              "Ref": "MemberDirectoryDbPassword"
+            }
+          },
+          {
+            "Namespace": "aws:elasticbeanstalk:application:environment",
+            "OptionName": "Log4jContextSelector",
+            "Value": "org.apache.logging.log4j.registry.async.AsyncLoggerContextSelector"
+          },
+          {
+            "Namespace": "aws:elasticbeanstalk:application:environment",
+            "OptionName": "LOGGING_FILE",
+            "Value": {
+              "Ref": "MemberDirectoryLoggingFile"
+            }
+          },
+          {
+            "Namespace": "aws:elasticbeanstalk:hostmanager",
+            "OptionName": "LogPublicationControl",
+            "Value": "true"
+          },
+          {
+            "Namespace": "aws:elasticbeanstalk:healthreporting:system",
+            "OptionName": "ConfigDocument",
+            "Value": {
+              "Fn::Join": [
+                "",
+                [
+                  "{",
+                  "\"CloudWatchMetrics\": {",
+                  "\"Instance\": {",
+                  "\"ApplicationRequestsTotal\": 60,",
+                  "\"InstanceHealth\": 60",
+                  "}",
+                  "},",
+                  "\"Version\": 1",
+                  "}"
+                ]
+              ]
+            }
+          },
+          {
+            "Namespace": "aws:elasticbeanstalk:healthreporting:system",
+            "OptionName": "SystemType",
+            "Value": "enhanced"
+          }
+        ]
+      }
+    },
+    "MemberDirectoryEBEnv": {
+      "Type": "AWS::ElasticBeanstalk::Environment",
+      "Properties": {
+        "ApplicationName": {
+          "Ref": "MemberDirectoryApp"
+        },
+        "Description": "",
+        "CNAMEPrefix": {
+          "Ref": "AWS::StackName"
+        },
+        "TemplateName": {
+          "Ref": "MemberDirectoryAppConfigurationTemplate"
+        },
+        "VersionLabel": {
+          "Ref": "MemberDirectoryAppVersion"
+        },
+        "Tags": [
+          {
+            "Key": "concert:visible-for-monitoring",
+            "Value": "true"
+          }
+        ]
+      }
+    },
+    "MemberDirectoryRdsPostgres": {
+      "Type": "AWS::RDS::DBInstance",
+      "Properties": {
+        "AllocatedStorage": "5",
+        "AllowMajorVersionUpgrade": "false",
+        "AutoMinorVersionUpgrade": "true",
+        "DBInstanceClass": {
+          "Ref": "MemberDirectoryRdsInstanceType"
+        },
+        "Port": "5432",
+        "PubliclyAccessible": "true",
+        "StorageType": "gp2",
+        "BackupRetentionPeriod": "7",
+        "MasterUsername": {
+          "Ref": "MemberDirectoryDbUsername"
+        },
+        "MasterUserPassword": {
+          "Ref": "MemberDirectoryDbPassword"
+        },
+        "PreferredBackupWindow": "03:40-04:10",
+        "PreferredMaintenanceWindow": "sun:23:51-mon:00:21",
+        "DBName": {
+          "Ref": "MemberDirectoryDBName"
+        },
+        "Engine": "postgres",
+        "EngineVersion": {
+          "Ref": "MemberDirectoryDbVersion"
+        },
+        "LicenseModel": "postgresql-license",
+        "VPCSecurityGroups": [
+          {
+            "Fn::GetAtt": [
+              "MemberDirectoryDbSecurityGroup",
+              "GroupId"
+            ]
+          }
+        ],
+        "Tags": [
+          {
+            "Key": "workload-type",
+            "Value": "other"
+          }
+        ]
+      }
+    },
+    "MemberDirectoryAppSecurityGroup": {
+      "Type": "AWS::EC2::SecurityGroup",
+      "Properties": {
+        "GroupDescription": "MemberDirectory: This security group enables Member Directory to reach the external RDS DB"
+      }
+    },
+    "MemberDirectoryDbSecurityGroup": {
+      "Type": "AWS::EC2::SecurityGroup",
+      "Properties": {
+        "GroupDescription": "MemberDirectory: This security group enables Member Directory to reach the external RDS DB"
+      }
+    },
+    "MemberDirectorySGIngress": {
+      "Type": "AWS::EC2::SecurityGroupIngress",
+      "Properties": {
+        "GroupId": {
+          "Fn::GetAtt": [
+            "MemberDirectoryDbSecurityGroup",
+            "GroupId"
+          ]
+        },
+        "IpProtocol": "tcp",
+        "FromPort": "5432",
+        "ToPort": "5432",
+        "SourceSecurityGroupId": {
+          "Fn::GetAtt": [
+            "MemberDirectoryAppSecurityGroup",
+            "GroupId"
+          ]
+        }
+      }
+    },
+    "MemberDirectoryCloudWatchInstanceProfile": {
+      "Type": "AWS::IAM::InstanceProfile",
+      "Properties": {
+        "Path": "/",
+        "Roles": [
+          {
+            "Ref": "MemberDirectoryCloudWatchRole"
+          }
+        ]
+      }
+    },
+    "MemberDirectoryCloudWatchRole": {
+      "Properties": {
+        "AssumeRolePolicyDocument": {
+          "Statement": [
+            {
+              "Action": [
+                "sts:AssumeRole"
+              ],
+              "Effect": "Allow",
+              "Principal": {
+                "Service": [
+                  "ec2.amazonaws.com"
+                ]
+              }
+            }
+          ]
+        },
+        "ManagedPolicyArns": [
+          "arn:aws:iam::aws:policy/AWSElasticBeanstalkWebTier"
+        ],
+        "Path": "/"
+      },
+      "Type": "AWS::IAM::Role"
+    },
+    "MemberDirectoryCloudWatchRolePolicies": {
+      "Type": "AWS::IAM::Policy",
+      "Properties": {
+        "PolicyName": "cwaccess",
+        "PolicyDocument": {
+          "Statement": [
+            {
+              "Effect": "Allow",
+              "Action": [
+                "logs:*",
+                "cloudwatch:PutMetricData",
+                "cloudwatch:GetMetricStatistics",
+                "cloudwatch:ListMetrics",
+                "ec2:DescribeTags"
+              ],
+              "Resource": "*"
+            }
+          ]
+        },
+        "Roles": [
+          {
+            "Ref": "MemberDirectoryCloudWatchRole"
+          }
+        ]
+      }
+    }
+  },
+  "AWSTemplateFormatVersion": "2010-09-09",
+  "Metadata": {
+    "AWS::CloudFormation::Interface": {
+      "ParameterGroups": [
+        {
+          "Label": {
+            "default": "Application Source"
+          },
+          "Parameters": [
+            "AppZipBucket"
+          ]
+        },
+        {
+          "Label": {
+            "default": "Route53 URL"
+          },
+          "Parameters": [
+            "Route53Url"
+          ]
+        },
+        {
+          "Label": {
+            "default": "AWS Account Configuration"
+          },
+          "Parameters": [
+            "AwsAccountNumber",
+            "AwsAccessKeyId",
+            "AwsSecretKey",
+            "AwsRegion",
+            "AwsUri",
+            "KeyName"
+          ]
+        },
+        {
+          "Label": {
+            "default": "Database Configuration"
+          },
+          "Parameters": [
+            "MemberDirectoryRdsInstanceType",
+            "MemberDirectoryDbVersion",
+            "MemberDirectoryDbDriver",
+            "MemberDirectoryDbUsername",
+            "MemberDirectoryDbPassword",
+            "MemberDirectoryDBName"
+          ]
+        },
+        {
+          "Label": {
+            "default": "Logging Configuration"
+          },
+          "Parameters": [
+            "MemberDirectoryLoggingFile",
+            "LoggingLevelComAeponaMemberDirectory",
+            "LoggingLevelOrgLiquibase"
+          ]
+        },
+        {
+          "Label": {
+            "default": "Member Directory Elastic Beanstalk Configuration"
+          },
+          "Parameters": [
+            "MemberDirectoryAppZipObject",
+            "MemberDirectorySolutionStackName",
+            "MemberDirectoryInstanceType",
+            "MemberDirectoryAppMinSize",
+            "MemberDirectoryAppMaxSize"
+          ]
+        }
+      ]
+    }
+  },
+  "Outputs": {
+    "MemberDirectoryAppURL": {
+      "Value": {
+        "Fn::Join": [
+          "",
+          [
+            "https://md.",
+            {
+              "Ref": "Route53Url"
+            },
+            ""
+          ]
+        ]
+      },
+      "Description": "MemberDirectory Backend URL"
+    }
+  }
+}

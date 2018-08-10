@@ -19,6 +19,7 @@
     </parent>
 
     <properties>
+        <build.number/>
         <commons.lang.version>3.6</commons.lang.version>
         <fox.swagger.version>2.7.0</fox.swagger.version>
         <guava.version>19.0</guava.version>
