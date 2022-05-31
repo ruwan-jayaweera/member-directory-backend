@@ -2,3 +2,5 @@
 *.iml
 tomcat-logs/
 .log
+/member-directory/target/
+/member-directory-app/target/
